@@ -28,36 +28,27 @@
                 {
                     case "1":
                         bibliotek.AddBook();
-                        bibliotek.Pausa();
                         break;
                     case "2":
                         bibliotek.AddAutor();
-                        bibliotek.Pausa();
                         break;
                     case "3":
                         bibliotek.UpdateBookInfo();
-                        bibliotek.Pausa();
                         break;
                     case "4":
                         bibliotek.UpdateAutorInfo();
-                        bibliotek.Pausa();
                         break;
                     case "5":
-
-                        bibliotek.Pausa();
+                        bibliotek.RemoveBook();//Finns inte än
                         break;
                     case "6":
-
-                        bibliotek.Pausa();
+                        bibliotek.RemoveAutor();
                         break;
                     case "7":
-                        Console.Clear();
                         bibliotek.PrintBookListAndAutor();
-                        bibliotek.Pausa();
                         break;
                     case "8":
-
-                        bibliotek.Pausa();
+                        bibliotek.SearchAndFilter();//Finns inte än
                         break;
                     case "9":
                         programIsRuning = false;

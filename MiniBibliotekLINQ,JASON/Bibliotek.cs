@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace MiniBibliotekLINQ_JASON
 {
@@ -27,6 +28,7 @@ namespace MiniBibliotekLINQ_JASON
 
         public void PrintBookListAndAutor()
         {
+            Console.Clear();
             Console.WriteLine("----Alla böcker i LISTAN----");
             foreach (var book in BookList)
             {
@@ -38,6 +40,7 @@ namespace MiniBibliotekLINQ_JASON
             {
                 Console.WriteLine($"Författarens namn : *{autor.Namn}* Författarens hemland : *{autor.Land}* Författarens ID : *{autor.Id}*");
             }
+            Pausa();
         }
 
         public void AddBook()
@@ -65,6 +68,7 @@ namespace MiniBibliotekLINQ_JASON
             AutorList.Add(newFörfattare);
 
             Console.WriteLine($"Boken med titlen *{nyTitle}* blev tillagd");
+            Pausa();
         }
 
         public void AddAutor()
@@ -81,6 +85,7 @@ namespace MiniBibliotekLINQ_JASON
             Författare LäggTillförfattare = new Författare(addAutor, addLand, addId);
             AutorList.Add(LäggTillförfattare);
             Console.WriteLine($"Författaren med namnet *{addAutor}* lades till i författarlistan");
+            Pausa();
         }
 
         public void UpdateBookInfo()
@@ -130,6 +135,7 @@ namespace MiniBibliotekLINQ_JASON
 
 
                 Console.WriteLine($"Boken *{bookToUpdate.Title}* har uppdaterats!");
+                Pausa();
             }
             else
             {
@@ -188,16 +194,53 @@ namespace MiniBibliotekLINQ_JASON
                 Console.WriteLine("Ange författarens nya ID (lämna tomt för att behålla nuvarande ID) : ");
                 string autorNewId = Console.ReadLine()!;
                 if (int.TryParse(autorNewId, out int allNewId)) autorToUpdate.Id = allNewId;
+                Pausa();
             }
             else
             {
                 Console.WriteLine($"Ingen författare med namnet *{updateAutor}* hittades");
             }
-            
+
         }
 
+        public void RemoveAutor()
+        {
+            Console.Clear();
+            PrintAutorList();
+            Console.WriteLine("\nSkriv namnet på författaren du vill ta bort: ");
+            string autorToRemoveName = Console.ReadLine()!;
 
+            var autorToRemove = AutorList.FirstOrDefault(a => a.Namn!.Equals(autorToRemoveName, StringComparison.OrdinalIgnoreCase));
 
+            if (autorToRemove == null)
+            {
+                Console.WriteLine("Författarem hittades inte i listan");
+                return;
+            }
+            if(BookList.Any(book => book.Författare!.Equals(autorToRemove!.Namn, StringComparison.OrdinalIgnoreCase))) 
+            {
+                Console.WriteLine($"Författaren *{autorToRemove!.Namn}* har böcker kopplade till sig.");
+                Console.WriteLine("Vill du ta bort författaren trots att den har böcker kopplade till sig? (j/n)");
+
+                if (!Console.ReadLine()!.Equals("j", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("Författaren har inte tagits bort.");
+                    return;
+                }
+            }
+            AutorList.Remove(autorToRemove!);
+            Console.WriteLine($"Författaren *{autorToRemove!.Namn}* har tagits bort!");
+        }   
+
+        public void RemoveBook()
+        {
+
+        }
+
+        public void SearchAndFilter()
+        {
+
+        }
 
 
 
@@ -227,3 +270,5 @@ namespace MiniBibliotekLINQ_JASON
         }
     }
 }
+
+
