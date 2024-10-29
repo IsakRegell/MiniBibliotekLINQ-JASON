@@ -1,12 +1,24 @@
-﻿namespace MiniBibliotekLINQ_JASON
+﻿using System.Text.Json;
+
+namespace MiniBibliotekLINQ_JASON
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Bibliotek bibliotek = new Bibliotek();
-            List<Författare> AutorList = new List<Författare>();
-            List<Bok> BookList = new List<Bok>();
+            string dataJSONfilPath = "LaibaryData.json";
+            string allaDataSomJSONType = File.ReadAllText(dataJSONfilPath);
+            MiniDB minLillaDB = JsonSerializer.Deserialize<MiniDB>(allaDataSomJSONType)!;
+
+            Bibliotek bibliotek = new Bibliotek(minLillaDB);
+
+            //List<Bok> allaBöckerFrånDB = minLillaDB.AllaböckerFrånDB;
+            //List<Författare> allaAutorsFrånDB = minLillaDB.AllaförfattareFrånDB;
+
+            
+            
+            
+
             bool programIsRuning = true;
 
             while (programIsRuning)
@@ -28,29 +40,37 @@
                 {
                     case "1":
                         bibliotek.AddBook();
+                        bibliotek.SaveData(dataJSONfilPath, minLillaDB);
                         break;
                     case "2":
                         bibliotek.AddAutor();
+                        bibliotek.SaveData(dataJSONfilPath, minLillaDB);
                         break;
                     case "3":
                         bibliotek.UpdateBookInfo();
+                        bibliotek.SaveData(dataJSONfilPath, minLillaDB);
                         break;
                     case "4":
                         bibliotek.UpdateAutorInfo();
+                        bibliotek.SaveData(dataJSONfilPath, minLillaDB);
                         break;
                     case "5":
-                        bibliotek.RemoveBook();//Finns inte än
+                        bibliotek.RemoveBookByTitle();
+                        bibliotek.SaveData(dataJSONfilPath, minLillaDB);
                         break;
                     case "6":
                         bibliotek.RemoveAutor();
+                        bibliotek.SaveData(dataJSONfilPath, minLillaDB);
                         break;
                     case "7":
                         bibliotek.PrintBookListAndAutor();
+                        bibliotek.SaveData(dataJSONfilPath, minLillaDB);
                         break;
                     case "8":
                         bibliotek.SearchAndFilter();//Finns inte än
                         break;
                     case "9":
+                        Console.WriteLine("Du sparade och stängde ner applikationen...");
                         programIsRuning = false;
                         break;
                     default:
@@ -58,7 +78,9 @@
                         break;
                 }
             }
-            
+
         }
+
+        
     }
 }

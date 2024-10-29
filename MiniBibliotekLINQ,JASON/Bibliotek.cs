@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -9,22 +10,18 @@ namespace MiniBibliotekLINQ_JASON
 {
     public class Bibliotek
     {
-        List<Författare> AutorList = new List<Författare>();
-        List<Bok> BookList = new List<Bok>();
-        public Bibliotek()
-        {
-            Bok book1 = new Bok("Isaks äventyr", "Ove LPP", "Action", 123, 111);
-            BookList.Add(book1);
-            book1.RecensionerList!.Add(3);
-            Författare författare1 = new Författare("Ove LPP", "Sverige", 1);
-            AutorList.Add(författare1);
 
-            Bok book2 = new Bok("Amandas äventyr", "Anette RSS", "Drama", 321, 222);
-            BookList.Add(book2);
-            book2.RecensionerList!.Add(4);
-            Författare författare2 = new Författare("Anette RSS", "Tyskland", 2);
-            AutorList.Add(författare2);
+        //List<Författare> AutorList = new List<Författare>();
+        //List<Bok> BookList = new List<Bok>();
+        public List<Författare> AutorList;
+        public List<Bok> BookList;
+
+        public Bibliotek(MiniDB minLillaDB)
+        {
+            AutorList = minLillaDB.AllaförfattareFrånDB;
+            BookList = minLillaDB.AllaböckerFrånDB;
         }
+
 
         public void PrintBookListAndAutor()
         {
@@ -33,7 +30,7 @@ namespace MiniBibliotekLINQ_JASON
             foreach (var book in BookList)
             {
                 string RecensionerList = string.Join("/5* ", book.RecensionerList!);
-                Console.WriteLine($"\nTitle : *{book.Title}* Författare : *{book.Författare}* Genre : *{book.Genre}* Bokens ID : *{book.Id}* \n Bookens ISBN *{book.Isbn}* Bokens resentioner *{RecensionerList}/5*");
+                Console.WriteLine($"\nTitle : *{book.Title}* Författare : *{book.Forfattare}* Genre : *{book.Genre}* Bokens ID : *{book.Id}* \n Bookens ISBN *{book.Isbn}* Bokens resentioner *{RecensionerList}/5*");
             }
             Console.WriteLine("\n---Detta är alla författare i våran LISTA---");
             foreach (var autor in AutorList)
@@ -119,7 +116,7 @@ namespace MiniBibliotekLINQ_JASON
 
                 Console.WriteLine("Ange ny författare (lämna tomt för att behålla nuvarande författare) : ");
                 string updAutor = Console.ReadLine()!;
-                if (!string.IsNullOrEmpty(updAutor)) bookToUpdate.Författare = updAutor;
+                if (!string.IsNullOrEmpty(updAutor)) bookToUpdate.Forfattare = updAutor;
 
                 Console.WriteLine("Ange ny genre (lämna tomt för att behålla nuvarande genre) : ");
                 string updGenre = Console.ReadLine()!;
@@ -176,15 +173,7 @@ namespace MiniBibliotekLINQ_JASON
                     string oldName = autorToUpdate.Namn!;
                     autorToUpdate.Namn = autorNewName;
 
-                    BookList.Where(book => book.Författare!.Equals(oldName, StringComparison.OrdinalIgnoreCase)).ToList().ForEach(book => book.Författare = autorNewName);
-
-                    //foreach (var book in BookList)
-                    //{
-                    //    if(book.Författare.Equals(oldName, StringComparison.OrdinalIgnoreCase))
-                    //    {
-                    //        book.Författare = oldName;
-                    //    }
-                    //}
+                    BookList.Where(book => book.Forfattare!.Equals(oldName, StringComparison.OrdinalIgnoreCase)).ToList().ForEach(book => book.Forfattare = autorNewName);
                 }
 
                 Console.WriteLine("Ange det nya landet författaren är ifrån (lämna tomt för att behålla nuvarande land) : ");
@@ -217,7 +206,7 @@ namespace MiniBibliotekLINQ_JASON
                 Console.WriteLine("Författarem hittades inte i listan");
                 return;
             }
-            if(BookList.Any(book => book.Författare!.Equals(autorToRemove!.Namn, StringComparison.OrdinalIgnoreCase))) 
+            if (BookList.Any(book => book.Forfattare!.Equals(autorToRemove!.Namn, StringComparison.OrdinalIgnoreCase)))
             {
                 Console.WriteLine($"Författaren *{autorToRemove!.Namn}* har böcker kopplade till sig.");
                 Console.WriteLine("Vill du ta bort författaren trots att den har böcker kopplade till sig? (j/n)");
@@ -229,11 +218,27 @@ namespace MiniBibliotekLINQ_JASON
                 }
             }
             AutorList.Remove(autorToRemove!);
-            Console.WriteLine($"Författaren *{autorToRemove!.Namn}* har tagits bort!");
-        }   
+            Console.WriteLine($"\nFörfattaren *{autorToRemove!.Namn}* har tagits bort!");
+            Pausa();
+        }
 
-        public void RemoveBook()
+        public void RemoveBookByTitle()
         {
+            Console.Clear();
+            PrintBookList();
+            Console.WriteLine("\nSkriv titlen på boken du vill ta bort: ");
+            string bookToRemoveTitle = Console.ReadLine()!;
+
+            var bookToRemove = BookList.FirstOrDefault(b => b.Title!.Equals(bookToRemoveTitle, StringComparison.OrdinalIgnoreCase));
+
+            if (bookToRemove == null)
+            {
+                Console.WriteLine("Titlen hittades inte i listan");
+                return;
+            }
+            BookList.Remove(bookToRemove);
+            Console.WriteLine($"\nBoken *{bookToRemoveTitle}* har tagits bort");
+            Pausa();
 
         }
 
@@ -245,6 +250,15 @@ namespace MiniBibliotekLINQ_JASON
 
 
 
+
+
+
+        public void SaveData(string dataJSONfilPath, MiniDB minLillaDB)
+        {
+            string updateradeLillaDB = JsonSerializer.Serialize(minLillaDB, new JsonSerializerOptions { WriteIndented = true });
+
+            File.WriteAllText(dataJSONfilPath, updateradeLillaDB);
+        }
 
 
         public void PrintAutorList()

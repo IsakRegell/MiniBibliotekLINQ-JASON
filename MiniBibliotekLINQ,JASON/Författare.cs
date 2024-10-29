@@ -9,12 +9,12 @@ namespace MiniBibliotekLINQ_JASON
 {
     public class Författare
     {
-        List<Bok> BookList = new List<Bok>();
 
-        List<Författare> AutorList = new List<Författare>();
         public string? Namn {  get; set; }
         public string? Land {  get; set; }
         public int Id {  get; set; }
+
+
         public List<string>? skrivnaBöcker {  get; set; }
 
         public Författare(string namn, string land, int id)

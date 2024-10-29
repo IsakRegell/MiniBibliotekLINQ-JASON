@@ -1,0 +1,65 @@
+{
+  "Bocker": [
+    {
+      "Title": "Morkret",
+      "Forfattare": "John Smith",
+      "Genre": "Thriller",
+      "Id": 1,
+      "Isbn": 978,
+      "RecensionerList": [ 1, 2, 3, 4 ]
+    },
+    {
+      "Title": "Stjarnfall",
+      "Forfattare": "Maria Andersson",
+      "Genre": "Science Fiction",
+      "Id": 2,
+      "Isbn": 978,
+      "RecensionerList": [ 1, 2, 3, 4 ]
+    },
+    {
+      "Title": "Havets Sang",
+      "Forfattare": "Karin Eriksson",
+      "Genre": "Romantik",
+      "Id": 3,
+      "Isbn": 978,
+      "RecensionerList": [ 1, 2, 3, 4 ]
+    },
+    {
+      "Title": "Skuggan av ett Minne",
+      "Forfattare": "Oskar Pettersson",
+      "Genre": "Mysterium",
+      "Id": 6,
+      "Isbn": 978,
+      "RecensionerList": [ 1, 2, 3, 4 ]
+    }
+  ],
+
+
+
+  "AutorList": [
+    {
+      "Namn": "Astrid Lindgren",
+      "Land": "Sverige",
+      "Id": 1,
+      "skrivnaBöcker": [ "Pippi Långstrump", "Bröderna Lejonhjärta" ]
+    },
+    {
+      "Namn": "Selma Lagerlöf",
+      "Land": "Sverige",
+      "Id": 2,
+      "skrivnaBöcker": [ "Gösta Berlings saga" ]
+    },
+    {
+      "Namn": "Henning Mankell",
+      "Land": "Sverige",
+      "Id": 3,
+      "skrivnaBöcker": [ "Mördare utan ansikte", "Innan frosten" ]
+    },
+    {
+      "Namn": "J.K. Rowling",
+      "Land": "Storbritannien",
+      "Id": 4,
+      "skrivnaBöcker": [ "Harry Potter och de vises sten", "Harry Potter och hemligheternas kammare" ]
+    }
+  ]
+}
