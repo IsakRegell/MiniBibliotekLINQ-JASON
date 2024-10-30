@@ -41,25 +41,25 @@
       "Namn": "Astrid Lindgren",
       "Land": "Sverige",
       "Id": 1,
-      "skrivnaBöcker": [ "Pippi Långstrump", "Bröderna Lejonhjärta" ]
+      "skrivnaBï¿½cker": [ "Pippi Lï¿½ngstrump", "Brï¿½derna Lejonhjï¿½rta" ]
     },
     {
-      "Namn": "Selma Lagerlöf",
+      "Namn": "Selma Lagerlï¿½f",
       "Land": "Sverige",
       "Id": 2,
-      "skrivnaBöcker": [ "Gösta Berlings saga" ]
+      "skrivnaBï¿½cker": [ "Gï¿½sta Berlings saga" ]
     },
     {
       "Namn": "Henning Mankell",
       "Land": "Sverige",
       "Id": 3,
-      "skrivnaBöcker": [ "Mördare utan ansikte", "Innan frosten" ]
+      "skrivnaBï¿½cker": [ "Mï¿½rdare utan ansikte", "Innan frosten" ]
     },
     {
       "Namn": "J.K. Rowling",
       "Land": "Storbritannien",
       "Id": 4,
-      "skrivnaBöcker": [ "Harry Potter och de vises sten", "Harry Potter och hemligheternas kammare" ]
+      "skrivnaBï¿½cker": [ "Harry Potter och de vises sten", "Harry Potter och hemligheternas kammare" ]
     }
   ]
 }

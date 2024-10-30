@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MiniBibliotekLINQ_JASON
 {
@@ -88,6 +89,7 @@ namespace MiniBibliotekLINQ_JASON
         public void UpdateBookInfo()
         {
             Console.Clear();
+            Console.WriteLine("----Dessa böcker kan du uppdatera----");
             PrintBookList();
             Console.WriteLine("\nSkriv titlen på boken du vill uppdatera? : ");
             string updBook = Console.ReadLine()!;
@@ -244,7 +246,79 @@ namespace MiniBibliotekLINQ_JASON
 
         public void SearchAndFilter()
         {
+            Console.Clear();
+            Console.WriteLine("---Filtrerad sökning---");
+            Console.WriteLine("1. För sökning via genre");
+            Console.WriteLine("2. För sökning med författare");
+            string minimenyval = Console.ReadLine()!;
 
+            if (minimenyval == "1")
+            {
+                Console.Clear();
+                Console.WriteLine("GENRE som finns inne");
+                Console.WriteLine(" ");
+                var genres = BookList.Select(b => b.Genre).Distinct();
+                foreach (var genre in genres)
+                {
+                    Console.WriteLine(genre);
+                }
+                Console.WriteLine("\n\nVilken genre vill du ha mer info om?");
+                string genremenyval = Console.ReadLine()!;
+
+                var booksInGenre = BookList.Where(b => b.Genre!.Equals(genremenyval, StringComparison.OrdinalIgnoreCase));
+
+
+                if (booksInGenre.Any())
+                {
+                    Console.WriteLine($"Böcker i genren {genremenyval}:");
+                    foreach (var book in booksInGenre)
+                    {
+                        Console.WriteLine($"Boken : *{book.Title}* matcha din sökning");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Inga böcker finns i den genren.");
+                }
+            }
+            if (minimenyval == "2")
+            {
+                Console.Clear();
+                Console.WriteLine("Författare som finns inne\n");
+
+                var författareFrånBöcker = BookList.Select(b => b.Forfattare).Distinct();
+                var författareFrånAutorList = AutorList.Select(b => b.Namn).Distinct();
+
+                // Kombinerar de två listorna och tar bort dubbletter
+                var allaFörfattare = författareFrånBöcker.Concat(författareFrånAutorList).Distinct();
+
+                // Skriver ut alla författare
+                foreach (var författare in allaFörfattare)
+                {
+                    Console.WriteLine(författare);
+                }
+
+                Console.WriteLine("\n\nVilken Författare vill du ha mer info om?");
+                string författaremenyval = Console.ReadLine()!;
+
+                // Hämta alla böcker av den valda författaren
+                var böckerAvFörfattare = BookList.Where(b => b.Forfattare!.Equals(författaremenyval, StringComparison.OrdinalIgnoreCase));
+
+                // Kontrollera om det finns några böcker för författaren
+                if (böckerAvFörfattare.Any())
+                {
+                    Console.WriteLine($"\nBöcker av {författaremenyval}:");
+                    foreach (var bok in böckerAvFörfattare)
+                    {
+                        Console.WriteLine($"{bok.Title} - Genre: {bok.Genre}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Inga böcker hittades för den författaren.");
+                }
+            }
+            Pausa();
         }
 
 
@@ -270,10 +344,28 @@ namespace MiniBibliotekLINQ_JASON
         }
         public void PrintBookList()
         {
-            Console.WriteLine("----Dessa böcker kan du uppdatera----");
             foreach (var book in BookList)
             {
-                Console.WriteLine($"\nTitle : *{book.Title}*");
+                Console.WriteLine($"Title : *{book.Title}*");
+            }
+        }
+
+        public void Printbookgenre()
+        {
+            foreach (var book in BookList)
+            {
+                Console.WriteLine($"Genre : *{book.Genre}*");
+            }
+        }
+        public void PrintbookFörfattareautor()
+        {
+            foreach (var book in BookList)
+            {
+                Console.WriteLine($"Författare : *{book.Forfattare}*");
+            }
+            foreach (var autor in AutorList)
+            {
+                Console.WriteLine($"Författare : *{autor.Namn}*");
             }
         }
         public void Pausa()

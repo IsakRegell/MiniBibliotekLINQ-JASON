@@ -64,10 +64,9 @@ namespace MiniBibliotekLINQ_JASON
                         break;
                     case "7":
                         bibliotek.PrintBookListAndAutor();
-                        bibliotek.SaveData(dataJSONfilPath, minLillaDB);
                         break;
                     case "8":
-                        bibliotek.SearchAndFilter();//Finns inte än
+                        bibliotek.SearchAndFilter();
                         break;
                     case "9":
                         Console.WriteLine("Du sparade och stängde ner applikationen...");
