@@ -1,27 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Xml;
-using static System.Reflection.Metadata.BlobBuilder;
+﻿using System.Text.Json;
+using MiniBibliotekLINQ_JASON;
 
 namespace MiniBibliotekLINQ_JASON
 {
     public class Bibliotek
     {
 
-        //List<Författare> AutorList = new List<Författare>();
-        //List<Bok> BookList = new List<Bok>();
-        public List<Författare> AutorList;
-        public List<Bok> BookList;
+        private MiniDB minLillaDB;
+        private HelpMetods hjälpMetoder;
 
+        public List<Författare> AutorList { get; private set; }
+        public List<Bok> BookList { get; private set; }
+
+        // Konstruktorn tar emot en existerande instans av MiniDB och skapar en HelpMetods-instans
         public Bibliotek(MiniDB minLillaDB)
         {
+            this.minLillaDB = minLillaDB;
+            hjälpMetoder = new HelpMetods(minLillaDB); 
             AutorList = minLillaDB.AllaförfattareFrånDB;
             BookList = minLillaDB.AllaböckerFrånDB;
         }
+
+
 
 
         public void PrintBookListAndAutor()
@@ -38,7 +38,7 @@ namespace MiniBibliotekLINQ_JASON
             {
                 Console.WriteLine($"Författarens namn : *{autor.Namn}* Författarens hemland : *{autor.Land}* Författarens ID : *{autor.Id}*");
             }
-            Pausa();
+            hjälpMetoder.Pausa();
         }
 
         public void AddBook()
@@ -66,7 +66,7 @@ namespace MiniBibliotekLINQ_JASON
             AutorList.Add(newFörfattare);
 
             Console.WriteLine($"Boken med titlen *{nyTitle}* blev tillagd");
-            Pausa();
+            hjälpMetoder.Pausa();
         }
 
         public void AddAutor()
@@ -83,14 +83,14 @@ namespace MiniBibliotekLINQ_JASON
             Författare LäggTillförfattare = new Författare(addAutor, addLand, addId);
             AutorList.Add(LäggTillförfattare);
             Console.WriteLine($"Författaren med namnet *{addAutor}* lades till i författarlistan");
-            Pausa();
+            hjälpMetoder.Pausa();
         }
 
         public void UpdateBookInfo()
         {
             Console.Clear();
             Console.WriteLine("----Dessa böcker kan du uppdatera----");
-            PrintBookList();
+            hjälpMetoder.PrintBookList();
             Console.WriteLine("\nSkriv titlen på boken du vill uppdatera? : ");
             string updBook = Console.ReadLine()!;
 
@@ -134,7 +134,7 @@ namespace MiniBibliotekLINQ_JASON
 
 
                 Console.WriteLine($"Boken *{bookToUpdate.Title}* har uppdaterats!");
-                Pausa();
+                hjälpMetoder.Pausa();
             }
             else
             {
@@ -146,7 +146,7 @@ namespace MiniBibliotekLINQ_JASON
         public void UpdateAutorInfo()
         {
             Console.Clear();
-            PrintAutorList();
+            hjälpMetoder.PrintAutorList();
             Console.WriteLine("\nSkriv Namnet på författaren du vill uppdatera? : ");
             string updateAutor = Console.ReadLine()!;
 
@@ -185,7 +185,7 @@ namespace MiniBibliotekLINQ_JASON
                 Console.WriteLine("Ange författarens nya ID (lämna tomt för att behålla nuvarande ID) : ");
                 string autorNewId = Console.ReadLine()!;
                 if (int.TryParse(autorNewId, out int allNewId)) autorToUpdate.Id = allNewId;
-                Pausa();
+                hjälpMetoder.Pausa();
             }
             else
             {
@@ -197,7 +197,7 @@ namespace MiniBibliotekLINQ_JASON
         public void RemoveAutor()
         {
             Console.Clear();
-            PrintAutorList();
+            hjälpMetoder.PrintAutorList();
             Console.WriteLine("\nSkriv namnet på författaren du vill ta bort: ");
             string autorToRemoveName = Console.ReadLine()!;
 
@@ -221,13 +221,13 @@ namespace MiniBibliotekLINQ_JASON
             }
             AutorList.Remove(autorToRemove!);
             Console.WriteLine($"\nFörfattaren *{autorToRemove!.Namn}* har tagits bort!");
-            Pausa();
+            hjälpMetoder.Pausa();
         }
 
         public void RemoveBookByTitle()
         {
             Console.Clear();
-            PrintBookList();
+            hjälpMetoder.PrintBookList();
             Console.WriteLine("\nSkriv titlen på boken du vill ta bort: ");
             string bookToRemoveTitle = Console.ReadLine()!;
 
@@ -240,7 +240,7 @@ namespace MiniBibliotekLINQ_JASON
             }
             BookList.Remove(bookToRemove);
             Console.WriteLine($"\nBoken *{bookToRemoveTitle}* har tagits bort");
-            Pausa();
+            hjälpMetoder.Pausa();
 
         }
 
@@ -318,62 +318,10 @@ namespace MiniBibliotekLINQ_JASON
                     Console.WriteLine("Inga böcker hittades för den författaren.");
                 }
             }
-            Pausa();
+            hjälpMetoder.Pausa();
         }
 
 
-
-
-
-
-
-        public void SaveData(string dataJSONfilPath, MiniDB minLillaDB)
-        {
-            string updateradeLillaDB = JsonSerializer.Serialize(minLillaDB, new JsonSerializerOptions { WriteIndented = true });
-
-            File.WriteAllText(dataJSONfilPath, updateradeLillaDB);
-        }
-
-
-        public void PrintAutorList()
-        {
-            foreach (var autor in AutorList)
-            {
-                Console.WriteLine($"Författarens namn : *{autor.Namn}*");
-            }
-        }
-        public void PrintBookList()
-        {
-            foreach (var book in BookList)
-            {
-                Console.WriteLine($"Title : *{book.Title}*");
-            }
-        }
-
-        public void Printbookgenre()
-        {
-            foreach (var book in BookList)
-            {
-                Console.WriteLine($"Genre : *{book.Genre}*");
-            }
-        }
-        public void PrintbookFörfattareautor()
-        {
-            foreach (var book in BookList)
-            {
-                Console.WriteLine($"Författare : *{book.Forfattare}*");
-            }
-            foreach (var autor in AutorList)
-            {
-                Console.WriteLine($"Författare : *{autor.Namn}*");
-            }
-        }
-        public void Pausa()
-        {
-            Console.WriteLine("\n Tryck på en tangent för att komma till MENYN...");
-            Console.ReadKey();
-            Console.Clear();
-        }
     }
 }
 
